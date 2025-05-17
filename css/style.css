@@ -5,21 +5,61 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  padding: 5vh 0;  /* Add some vertical padding */
 }
 
 .book-content {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
+  min-height: 90vh;  /* Adjust to account for progress bar */
+  display: flex;
+  flex-direction: column;
 }
 
 .page {
-  min-height: 100vh;
   width: 100%;
   position: relative;
   overflow-y: auto;
+  opacity: 0;
+  transition: opacity var(--fade-duration, 3.5s) ease-in-out;
+  padding: 2rem;
+  margin: auto 0;  /* Default center alignment */
+}
+
+/* Position variants */
+.page[data-position="top"] {
+  margin: 0 auto auto auto;
+}
+
+.page[data-position="middle"] {
+  margin: auto;
+}
+
+.page[data-position="bottom"] {
+  margin: auto auto 0 auto;
+}
+
+@media (max-width: 768px) {
+  .book-container {
+    padding: 3vh 15px;
+  }
+}
+
+.page.fade-in {
   opacity: 1;
-  transition: opacity 1.5s ease-in-out;
+}
+
+.page.fade-out {
+  opacity: 0;
+}
+
+/* Remove transitions from spans and strongs since we want page-level fade only */
+.text-chunk span,
+.text-chunk strong.fade-slow {
+  transition: none;
 }
 
 .text-chunk {
@@ -43,6 +83,7 @@
   transition: opacity 3s ease-in-out;
 }
 
+
 /* Page fade out states */
 .page.fade-out .text-chunk span {
   opacity: 0;
@@ -50,7 +91,7 @@
 
 .page.fade-out .text-chunk strong.fade-slow {
   opacity: 0;
-  transition-delay: 4s;
+  transition-delay: 2s;
 }
 
 .break-marker {
@@ -78,14 +119,4 @@
   background: #000;
   transition: width 0.3s ease-in-out;
   pointer-events: none;
-}
-
-@media (max-width: 768px) {
-  .book-container {
-    padding: 15px;
-  }
-
-  .page {
-    padding: 15px;
-  }
 }

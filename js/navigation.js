@@ -8,78 +8,27 @@ document.addEventListener('DOMContentLoaded', function() {
   let isTap = false;
   let isAnimating = false;
 
-  let isDragging = false;
-
-  // Add drag events
-  progressBar.addEventListener('mousedown', startDrag);
-  document.addEventListener('mousemove', drag);
-  document.addEventListener('mouseup', endDrag);
-  progressBar.addEventListener('touchmove', handleProgressTouch);
-  progressBar.addEventListener('touchend', endDrag);
-
-  function startDrag() {
-    isDragging = true;
-  }
-
-  function drag(e) {
-    if (!isDragging || isAnimating) return;
-    const rect = progressBar.getBoundingClientRect();
-    const position = (e.clientX - rect.left) / rect.width;
-    navigateToPosition(position);
-  }
-
-  function endDrag() {
-    isDragging = false;
-  }
-
+  // Hide all pages except first one
+  pages.forEach((page, index) => {
+    if (index === 0) {
+      page.classList.add('fade-in');
+    } else {
+      page.style.display = 'none';
+    }
+  });
 
   updateProgress();
-
-  // Add progress bar interaction
-  progressBar.addEventListener('click', handleProgressClick);
-  progressBar.addEventListener('touchstart', handleProgressTouch);
-
-  function handleProgressClick(e) {
-    if (isAnimating) return;
-    const rect = progressBar.getBoundingClientRect();
-    const position = (e.clientX - rect.left) / rect.width;
-    navigateToPosition(position);
-  }
-
-  function handleProgressTouch(e) {
-    e.preventDefault(); // Prevent page scrolling
-    if (isAnimating) return;
-    const rect = progressBar.getBoundingClientRect();
-    const touch = e.touches[0];
-    const position = (touch.clientX - rect.left) / rect.width;
-    navigateToPosition(position);
-  }
-
-  function navigateToPosition(position) {
-    const totalPages = pages.length;
-    const targetPage = Math.min(Math.floor(position * totalPages), totalPages - 1);
-
-    if (targetPage !== currentPage) {
-      const direction = targetPage > currentPage ? 1 : -1;
-      const steps = Math.abs(targetPage - currentPage);
-
-      let count = 0;
-      function animateSteps() {
-        if (count < steps) {
-          changePage(direction);
-          count++;
-          setTimeout(animateSteps, 8000);
-        }
-      }
-      animateSteps();
-    }
-  }
 
   // Hide all pages except first one
   pages.forEach((page, index) => {
     if (index !== 0) page.style.display = 'none';
   });
 
+  // Progress bar events
+  progressBar.addEventListener('click', handleProgressClick);
+  progressBar.addEventListener('touchstart', handleProgressTouch);
+
+  // Touch events
   document.addEventListener('touchstart', (e) => {
     touchStartX = e.touches[0].clientX;
     isTap = true;
@@ -99,6 +48,28 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   });
 
+  function handleProgressClick(e) {
+    if (isAnimating) return;
+    const rect = progressBar.getBoundingClientRect();
+    const position = (e.clientX - rect.left) / rect.width;
+    const targetPage = Math.min(Math.floor(position * pages.length), pages.length - 1);
+    if (targetPage !== currentPage) {
+      changePage(targetPage > currentPage ? 1 : -1);
+    }
+  }
+
+  function handleProgressTouch(e) {
+    e.preventDefault();
+    if (isAnimating) return;
+    const rect = progressBar.getBoundingClientRect();
+    const touch = e.touches[0];
+    const position = (touch.clientX - rect.left) / rect.width;
+    const targetPage = Math.min(Math.floor(position * pages.length), pages.length - 1);
+    if (targetPage !== currentPage) {
+      changePage(targetPage > currentPage ? 1 : -1);
+    }
+  }
+
   function handleTap(x) {
     const screenWidth = window.innerWidth;
     const tapPosition = x / screenWidth;
@@ -112,7 +83,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
   function handleSwipe() {
     const swipeDistance = touchEndX - touchStartX;
-
     if (Math.abs(swipeDistance) < 50) return;
 
     if (swipeDistance > 0 && currentPage > 0) {
@@ -127,31 +97,37 @@ document.addEventListener('DOMContentLoaded', function() {
     isAnimating = true;
 
     const currentPageElement = pages[currentPage];
+    const nextPage = currentPage + direction;
+    const nextPageElement = pages[nextPage];
+
+    // Get fade duration from data attribute or default to 1
+    const fadeDuration = parseFloat(nextPageElement.dataset.fadeDuration || 1);
+    nextPageElement.style.setProperty('--fade-duration', `${fadeDuration}s`);
+
+    currentPageElement.classList.remove('fade-in');
     currentPageElement.classList.add('fade-out');
 
     setTimeout(() => {
       currentPageElement.style.display = 'none';
       currentPageElement.classList.remove('fade-out');
-      currentPage += direction;
+      currentPage = nextPage;
 
-      const nextPageElement = pages[currentPage];
+      nextPageElement.classList.remove('fade-in');
       nextPageElement.style.display = 'block';
-      nextPageElement.classList.add('fade-out');
+
+      void nextPageElement.offsetWidth;
+      nextPageElement.classList.add('fade-in');
 
       updateProgress();
 
-      requestAnimationFrame(() => {
-        nextPageElement.classList.remove('fade-out');
-        setTimeout(() => {
-          isAnimating = false;
-        }, 8000);
-      });
-    }, 8000);
+      setTimeout(() => {
+        isAnimating = false;
+      }, fadeDuration * 1000 + 500);
+    }, 3000);
   }
 
   function updateProgress() {
-    const totalPages = pages.length;
-    const progressWidth = ((currentPage + 1) / totalPages) * 100;
+    const progressWidth = ((currentPage + 1) / pages.length) * 100;
     progress.style.width = `${progressWidth}%`;
   }
 });

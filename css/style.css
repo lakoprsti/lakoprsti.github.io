@@ -1,0 +1,56 @@
+
+.book-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+}
+
+.page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity 0.3s ease-in-out;
+}
+
+.page.fade-out {
+  opacity: 0;
+}
+
+.book-content {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+
+.text-chunk {
+  line-height: 1.6;
+}
+
+.text-chunk p {
+  margin-bottom: 1em;
+}
+
+.break-marker {
+  height: 1px;
+  background: #ddd;
+  margin: 2em 0;
+  width: 50%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+@media (max-width: 768px) {
+  .book-container {
+    padding: 15px;
+  }
+
+  .page {
+    padding: 15px;
+  }
+}

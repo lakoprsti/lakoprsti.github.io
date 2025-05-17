@@ -68,7 +68,7 @@ document.addEventListener('DOMContentLoaded', function() {
         if (count < steps) {
           changePage(direction);
           count++;
-          setTimeout(animateSteps, 300);
+          setTimeout(animateSteps, 8000);
         }
       }
       animateSteps();
@@ -144,9 +144,9 @@ document.addEventListener('DOMContentLoaded', function() {
         nextPageElement.classList.remove('fade-out');
         setTimeout(() => {
           isAnimating = false;
-        }, 300);
+        }, 8000);
       });
-    }, 300);
+    }, 8000);
   }
 
   function updateProgress() {

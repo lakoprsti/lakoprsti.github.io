@@ -1,4 +1,3 @@
-
 .book-container {
   position: fixed;
   top: 0;
@@ -8,32 +7,50 @@
   overflow: hidden;
 }
 
-.page {
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-  overflow-y: auto;
-  opacity: 1;
-  transition: opacity 0.3s ease-in-out;
-}
-
-.page.fade-out {
-  opacity: 0;
-}
-
 .book-content {
   width: 100%;
   max-width: 600px;
   margin: 0 auto;
 }
 
+.page {
+  min-height: 100vh;
+  width: 100%;
+  position: relative;
+  overflow-y: auto;
+  opacity: 1;
+  transition: opacity 1.5s ease-in-out;
+}
 
 .text-chunk {
   line-height: 1.6;
 }
 
+/* Base styles */
 .text-chunk p {
   margin-bottom: 1em;
+}
+
+/* Regular fade elements */
+.text-chunk span {
+  opacity: 1;
+  transition: opacity 1.5s ease-in-out;
+}
+
+/* Slow fade elements */
+.text-chunk strong.fade-slow {
+  opacity: 1;
+  transition: opacity 3s ease-in-out;
+}
+
+/* Page fade out states */
+.page.fade-out .text-chunk span {
+  opacity: 0;
+}
+
+.page.fade-out .text-chunk strong.fade-slow {
+  opacity: 0;
+  transition-delay: 4s;
 }
 
 .break-marker {
@@ -45,22 +62,12 @@
   margin-right: auto;
 }
 
-@media (max-width: 768px) {
-  .book-container {
-    padding: 15px;
-  }
-
-  .page {
-    padding: 15px;
-  }
-}
-
 .progress-bar {
   position: fixed;
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 20px; /* Increased for better touch target */
+  height: 20px;
   background: rgba(0, 0, 0, 0.1);
   cursor: pointer;
 }
@@ -71,4 +78,14 @@
   background: #000;
   transition: width 0.3s ease-in-out;
   pointer-events: none;
+}
+
+@media (max-width: 768px) {
+  .book-container {
+    padding: 15px;
+  }
+
+  .page {
+    padding: 15px;
+  }
 }

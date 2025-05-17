@@ -30,9 +30,9 @@
   margin: auto 0;  /* Default center alignment */
 }
 
-/* Position variants */
 .page[data-position="top"] {
   margin: 0 auto auto auto;
+  padding-bottom: 2rem;
 }
 
 .page[data-position="middle"] {
@@ -41,12 +41,9 @@
 
 .page[data-position="bottom"] {
   margin: auto auto 0 auto;
-}
-
-@media (max-width: 768px) {
-  .book-container {
-    padding: 3vh 15px;
-  }
+  padding-bottom: 3rem; /* Add extra padding at bottom for mobile */
+  max-height: 90vh; /* Limit height */
+  overflow-y: auto; /* Enable scrolling if content overflows */
 }
 
 .page.fade-in {

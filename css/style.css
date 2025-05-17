@@ -113,3 +113,22 @@
   transition: width 0.3s ease-in-out;
   pointer-events: none;
 }
+
+.text-chunk {
+  line-height: 1.6;
+  word-spacing: 0.35em; /* Add space between words */
+  letter-spacing: 0.1em; /* Base letter spacing */
+}
+
+/* Ensure proper spacing for spans and strong elements */
+.text-chunk span,
+.text-chunk strong {
+  word-spacing: inherit;
+  letter-spacing: inherit;
+}
+
+/* Maintain spacing in links if present */
+.text-chunk a {
+  word-spacing: inherit;
+  letter-spacing: inherit;
+}

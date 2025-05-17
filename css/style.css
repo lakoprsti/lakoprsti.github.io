@@ -5,6 +5,7 @@
   right: 0;
   bottom: 0;
   overflow: hidden;
+  background-color: #edd1b0;
   display: flex;
   flex-direction: column;
   padding: 5vh 0;  /* Add some vertical padding */

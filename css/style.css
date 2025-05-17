@@ -95,12 +95,7 @@
 }
 
 .break-marker {
-  height: 1px;
-  background: #ddd;
-  margin: 2em 0;
-  width: 50%;
-  margin-left: auto;
-  margin-right: auto;
+
 }
 
 .progress-bar {

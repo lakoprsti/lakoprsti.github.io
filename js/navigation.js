@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
       setTimeout(() => {
         isAnimating = false;
-      }, fadeDuration * 1000 + 500);
+      }, fadeDuration * 1000 + 100);
     }, 3000);
   }
 

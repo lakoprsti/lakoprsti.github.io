@@ -1,10 +1,14 @@
 document.addEventListener('DOMContentLoaded', function() {
   const pages = document.querySelectorAll('.page');
+  const progress = document.querySelector('.progress');
   let currentPage = 0;
   let touchStartX = 0;
   let touchEndX = 0;
   let isTap = false;
   let isAnimating = false;
+
+  // Initial progress update
+  updateProgress();
 
   // Hide all pages except first one
   pages.forEach((page, index) => {
@@ -69,6 +73,8 @@ document.addEventListener('DOMContentLoaded', function() {
       nextPageElement.style.display = 'block';
       nextPageElement.classList.add('fade-out');
 
+      updateProgress();
+
       requestAnimationFrame(() => {
         nextPageElement.classList.remove('fade-out');
         setTimeout(() => {
@@ -76,5 +82,11 @@ document.addEventListener('DOMContentLoaded', function() {
         }, 300);
       });
     }, 300);
+  }
+
+  function updateProgress() {
+    const totalPages = pages.length;
+    const progressWidth = ((currentPage + 1) / totalPages) * 100;
+    progress.style.width = `${progressWidth}%`;
   }
 });

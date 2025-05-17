@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
   const pages = document.querySelectorAll('.page');
+  const progressBar = document.querySelector('.progress-bar');
   const progress = document.querySelector('.progress');
   let currentPage = 0;
   let touchStartX = 0;
@@ -7,8 +8,72 @@ document.addEventListener('DOMContentLoaded', function() {
   let isTap = false;
   let isAnimating = false;
 
-  // Initial progress update
+  let isDragging = false;
+
+  // Add drag events
+  progressBar.addEventListener('mousedown', startDrag);
+  document.addEventListener('mousemove', drag);
+  document.addEventListener('mouseup', endDrag);
+  progressBar.addEventListener('touchmove', handleProgressTouch);
+  progressBar.addEventListener('touchend', endDrag);
+
+  function startDrag() {
+    isDragging = true;
+  }
+
+  function drag(e) {
+    if (!isDragging || isAnimating) return;
+    const rect = progressBar.getBoundingClientRect();
+    const position = (e.clientX - rect.left) / rect.width;
+    navigateToPosition(position);
+  }
+
+  function endDrag() {
+    isDragging = false;
+  }
+
+
   updateProgress();
+
+  // Add progress bar interaction
+  progressBar.addEventListener('click', handleProgressClick);
+  progressBar.addEventListener('touchstart', handleProgressTouch);
+
+  function handleProgressClick(e) {
+    if (isAnimating) return;
+    const rect = progressBar.getBoundingClientRect();
+    const position = (e.clientX - rect.left) / rect.width;
+    navigateToPosition(position);
+  }
+
+  function handleProgressTouch(e) {
+    e.preventDefault(); // Prevent page scrolling
+    if (isAnimating) return;
+    const rect = progressBar.getBoundingClientRect();
+    const touch = e.touches[0];
+    const position = (touch.clientX - rect.left) / rect.width;
+    navigateToPosition(position);
+  }
+
+  function navigateToPosition(position) {
+    const totalPages = pages.length;
+    const targetPage = Math.min(Math.floor(position * totalPages), totalPages - 1);
+
+    if (targetPage !== currentPage) {
+      const direction = targetPage > currentPage ? 1 : -1;
+      const steps = Math.abs(targetPage - currentPage);
+
+      let count = 0;
+      function animateSteps() {
+        if (count < steps) {
+          changePage(direction);
+          count++;
+          setTimeout(animateSteps, 300);
+        }
+      }
+      animateSteps();
+    }
+  }
 
   // Hide all pages except first one
   pages.forEach((page, index) => {

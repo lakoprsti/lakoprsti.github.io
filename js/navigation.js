@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
   const pages = document.querySelectorAll('.page');
   const progressBar = document.querySelector('.progress-bar');
   const progress = document.querySelector('.progress');
@@ -109,6 +109,13 @@ document.addEventListener('DOMContentLoaded', function() {
     }
   }
 
+  function setupFadeWordsOnPage() {
+    const fadeDuration = parseFloat(nextPageElement.dataset.fadeDuration || 1);
+    nextPageElement.style.setProperty('--fade-duration', `${fadeDuration}s`);
+    currentPageElement.classList.remove('fade-in');
+    currentPageElement.classList.add('fade-out');
+  }
+
   function changePage(direction) {
     if (isAnimating) return;
     isAnimating = true;
@@ -118,11 +125,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const nextPage = currentPage + direction;
     const nextPageElement = pages[nextPage];
 
-    const fadeDuration = parseFloat(nextPageElement.dataset.fadeDuration || 1);
-    nextPageElement.style.setProperty('--fade-duration', `${fadeDuration}s`);
-
-    currentPageElement.classList.remove('fade-in');
-    currentPageElement.classList.add('fade-out');
+    const embelishment = ""
+    switch (embelishment) {
+      case "fade":
+        setupFadeWordsOnPage();
+        break;
+      case "colour":
+        applyColorGradient("start", "end", "#ff0000", "#0000ff");
+        break;
+      default:
+        console.log("Unknown fruit");
+    }
 
     setTimeout(() => {
       currentPageElement.style.display = 'none';
@@ -133,7 +146,19 @@ document.addEventListener('DOMContentLoaded', function() {
       nextPageElement.style.display = 'block';
 
       void nextPageElement.offsetWidth;
-      nextPageElement.classList.add('fade-in');
+
+      const embelishment = ""
+      switch (embelishment) {
+        case "fade":
+          nextPageElement.classList.add('fade-in');
+          break;
+        case "banana":
+          console.log("This is a banana");
+          break;
+        default:
+          console.log("Unknown fruit");
+      }
+
 
       updateProgress();
       startAutoAdvance(); // Start auto-advance for new page

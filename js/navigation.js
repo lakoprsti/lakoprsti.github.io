@@ -226,7 +226,7 @@ function resetEffects() {
         element.style.transition = 'opacity 0.3s ease';
     });
     
-    document.body.style.backgroundColor = '#ffffff';
+    document.body.style.backgroundColor = '#fafafa';
 }
 
 // Keyboard navigation

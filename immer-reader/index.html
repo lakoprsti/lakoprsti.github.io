@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vitae Reader</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="progress-bar" id="progressBar"></div>
+    
+    <div class="container">
+        <div class="header">
+            <h1>Vitae</h1>
+            <p>Interactive Reading Experience</p>
+        </div>
+
+        <div class="document-input">
+            <input type="text" id="documentId" placeholder="Document ID" value="f31c5848-6b06-4b1d-845d-b92eba7c320f">
+            <button onclick="fetchDocument()">Load</button>
+        </div>
+
+        <div class="page-indicator">
+            <span id="pageInfo">Page 1 of 1</span>
+        </div>
+
+        <div class="content" id="content">
+            <div class="loading">Loading document...</div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="prevPage()" id="prevBtn">←</button>
+        <button onclick="resetEffects()" id="resetBtn">Reset</button>
+        <button onclick="nextPage()" id="nextBtn">→</button>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
